@@ -64,7 +64,7 @@ module "demo_aws" {
   mso_username = var.mso_username
   mso_password = var.mso_password
   mso_url = var.mso_url
-  name_prefix = var.name_prefix
+  name_prefix = "TF2-"
   site_name = "AWS-West"
   schema_name = var.schema_name
   tenant = var.tenant
