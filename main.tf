@@ -17,11 +17,8 @@ provider "mso" {
 // Deploy the MSO Template configuration
 module "demo_template" {
   source  = "app.terraform.io/cisco-dcn-ecosystem/demo_template/mso"
-  version = "0.0.3"
+  version = "0.0.4"
 
-  mso_username = var.mso_username
-  mso_password = var.mso_password
-  mso_url = var.mso_url
   name_prefix = var.name_prefix
   schema_name = var.schema_name
   subnet_gw = "10.101.10.254/24"
@@ -31,29 +28,25 @@ module "demo_template" {
 # Add the On-Premises site
 module "demo_onprem" {
   source  = "app.terraform.io/cisco-dcn-ecosystem/demo_onprem/mso"
-  version = "0.0.6"
+  version = "0.0.7"
 
-  mso_username = var.mso_username
-  mso_password = var.mso_password
-  mso_url = var.mso_url
   name_prefix = var.name_prefix
   site_name = "On-premises"
   schema_name = var.schema_name
   tenant = var.tenant
+  depends_on = [ module.demo_template ]
 }
 
 # Add the Azure site
 module "demo_azure" {
   source  = "app.terraform.io/cisco-dcn-ecosystem/demo_azure/mso"
-  version = "0.0.6"
+  version = "0.0.9"
 
-  mso_username = var.mso_username
-  mso_password = var.mso_password
-  mso_url = var.mso_url
   name_prefix = var.name_prefix
   site_name = "Azure-West"
   schema_name = var.schema_name
   tenant = var.tenant
+  depends_on = [ module.demo_template ]
 }
 
 data "mso_schema" "hybrid_cloud" {
