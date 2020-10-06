@@ -56,6 +56,20 @@ module "demo_azure" {
   tenant = var.tenant
 }
 
+# Add the AWS site
+module "demo_aws" {
+  source  = "app.terraform.io/cisco-dcn-ecosystem/demo_aws/mso"
+  version = "0.0.2"
+
+  mso_username = var.mso_username
+  mso_password = var.mso_password
+  mso_url = var.mso_url
+  name_prefix = var.name_prefix
+  site_name = "AWS-West"
+  schema_name = var.schema_name
+  tenant = var.tenant
+}
+
 data "mso_schema" "hybrid_cloud" {
   name = var.schema_name
   depends_on = [ module.demo_template ]
@@ -74,6 +88,7 @@ resource "mso_schema_template_external_epg" "extepg_cloud_internet" {
   selector_ip       = "0.0.0.0/0"
   site_id           = [ 
     module.demo_azure.azure_site_id,
+    module.demo_aws.aws_site_id,
     module.demo_onprem.onprem_site_id
   ]
 }
